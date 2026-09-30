@@ -12,8 +12,48 @@
 			<slot name="header" />
             <p class="text-content">Parker Kalis is a fullstack software engineer and computer science student.</p>
 		</header>
-		<main class="page-content">
-			<slot />
+        <hr class="divider" />
+		<main class="experience-content">
+			<h2>Experience</h2>
+			<article class="resume-entry">
+				<p class="entry-meta">Jan 2025 – Present</p>
+				<div class="entry-details">
+					<h3> Technical Computing Analyst</h3>
+					<p class="company-location">Space Science and Engineering Center · Madison, WI</p>
+				</div>
+			</article>
+			<article class="resume-entry">
+				<p class="entry-meta">May 2026 –  Aug 2026</p>
+				<div class="entry-details">
+					<h3>Software Engineer Intern</h3>
+					<p class="company-location">Alaska Airlines · Seattle, WA</p>
+				</div>
+			</article>
+            <article class="resume-entry">
+				<p class="entry-meta">May 2025 – Aug 2025</p>
+				<div class="entry-details">
+					<h3> Software Engineer Intern</h3>
+					<p class="company-location">Northwestern Mutual · Milwaukee, WI</p>
+				</div>
+			</article>
+			<article class="resume-entry">
+				<p class="entry-meta">May 2024 – Aug 2024</p>
+				<div class="entry-details">
+					<h3>Information Technology Intern</h3>
+					<p class="company-location">Steinhafels · Waukesha, WI</p>
+				</div>
+			</article>
+		</main>
+        <hr class="divider" />
+		<main class="education-content">
+			<h2>Education</h2>
+			<article class="resume-entry">
+				<p class="entry-meta">Sept 2023 – Dec 2026</p>
+				<div class="entry-details">
+					<h3>B.S. Computer Science</h3>
+					<p class="company-location">University of Wisconsin-Madison · Madison, WI</p>
+				</div>
+			</article>
 		</main>
 	</body>
 </html>
@@ -21,26 +61,74 @@
 
 <style>
 	.site-header {
-		width: min(40%, 70rem);
-        margin: 0 auto;
-        margin-top: 10%;
+		width: min(45%, 70rem);
+        margin: 16px auto 0;
+        margin-top: 0;
 		min-height: 100px;
 	}
-	.page-content {
-		width: min(40%, 70rem);
-		height: 60%;
-		margin: 6% auto 0;
+	.experience-content {
+		width: min(45%, 70rem);
+		height: 30%;
+		margin: 16px auto;
+	}
+    .education-content {
+		width: min(45%, 70rem);
+		height: 15%;
+		margin: 16px auto;
+	}
+	h2, h3, .entry-meta {
+		color: #fff;
+	}
+	h2 {
+		font-size: 12px;
+		font-weight: normal;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		margin: 0 0 24px;
+	}
+	h3 {
+		font-size: 16px;
+		font-weight: normal;
+		margin: 6px 0 0;
+	}
+	.resume-entry {
+		display: grid;
+        place-items: middle;
+		grid-template-columns: 140px 1fr;
+		column-gap: 12px;
+		margin-bottom: 24px;
+	}
+	.entry-meta {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+		font-size: 13px;
+		letter-spacing: -0.01em;;
+		color: #666;
+	}
+	.company-location {
+		font-size: 13px;
+		letter-spacing: -0.01em;
+		margin: 4px 0 0;
+		opacity: 0.7;
+        color: #666;
 	}
     .text-content {
-		font-family: "Uncut Sans Bold","Uncut Sans Bold Placeholder",sans-serif;
         font-size : 16px;
-        font-weight: normal;
 		letter-spacing: -0.02em;
         line-height: 110%;
         color: #FFF;
     }
+    .divider {
+        width: min(45%, 70rem);
+        height: 1px;
+        border: none;
+        background-color: #ffffff1a;
+    }
 
     * {
         border: 1px solid red;
+        font-family: "Uncut Sans Bold","Uncut Sans Bold Placeholder",sans-serif;
+    
     }
 </style>
