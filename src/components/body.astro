@@ -5,42 +5,43 @@
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
-		<title>page layout</title>
+		<title>Parker Kalis</title>
 	</head>
 	<body>
 		<header class="site-header">
 			<slot name="header" />
-            <p class="text-content">Parker Kalis is a fullstack software engineer and computer science student.</p>
+            <h2>Parker Kalis</h2>
+            <p class="header-details">Computer science student and software engineer. I build full stack applications. (Currently working on the design part)</p>
 		</header>
         <hr class="divider" />
 		<main class="experience-content">
 			<h2>Experience</h2>
 			<article class="resume-entry">
-				<p class="entry-meta">Jan 2025 – Present</p>
+				<p class="entry-meta">Jan 2025 – Dec 2026</p>
 				<div class="entry-details">
 					<h3> Technical Computing Analyst</h3>
-					<p class="company-location">Space Science and Engineering Center · Madison, WI</p>
+					<p class="company-location"><a href="https://www.ssec.wisc.edu/">Space Science and Engineering Center</a> · Madison, WI</p>
 				</div>
 			</article>
 			<article class="resume-entry">
 				<p class="entry-meta">May 2026 –  Aug 2026</p>
 				<div class="entry-details">
 					<h3>Software Engineer Intern</h3>
-					<p class="company-location">Alaska Airlines · Seattle, WA</p>
+					<p class="company-location"><a href="https://www.alaskaair.com/">Alaska Airlines</a> · Seattle, WA</p>
 				</div>
 			</article>
             <article class="resume-entry">
 				<p class="entry-meta">May 2025 – Aug 2025</p>
 				<div class="entry-details">
 					<h3> Software Engineer Intern</h3>
-					<p class="company-location">Northwestern Mutual · Milwaukee, WI</p>
+					<p class="company-location"><a href="https://www.northwesternmutual.com/">Northwestern Mutual</a> · Milwaukee, WI</p>
 				</div>
 			</article>
 			<article class="resume-entry">
 				<p class="entry-meta">May 2024 – Aug 2024</p>
 				<div class="entry-details">
 					<h3>Information Technology Intern</h3>
-					<p class="company-location">Steinhafels · Waukesha, WI</p>
+					<p class="company-location"><a href="https://www.steinhafels.com/">Steinhafels</a> · Waukesha, WI</p>
 				</div>
 			</article>
 		</main>
@@ -61,21 +62,23 @@
 
 <style>
 	.site-header {
-		width: min(45%, 70rem);
-        margin: 16px auto 0;
-        margin-top: 0;
-		min-height: 100px;
+		width: min(100% - 2rem, 44rem);
+		margin: auto;
+		padding-top: clamp(3rem, 10vw, 7rem);
+		padding-bottom: 1rem;
 	}
 	.experience-content {
-		width: min(45%, 70rem);
-		height: 30%;
+		width: min(100% - 2rem, 44rem);
 		margin: 16px auto;
 	}
     .education-content {
-		width: min(45%, 70rem);
-		height: 15%;
+		width: min(100% - 2rem, 44rem);
 		margin: 16px auto;
 	}
+    a {
+        text-decoration: underline;
+        color: #666;
+    }
 	h2, h3, .entry-meta {
 		color: #fff;
 	}
@@ -91,10 +94,17 @@
 		font-weight: normal;
 		margin: 6px 0 0;
 	}
+    .header-details {
+        text-align: left;
+        margin: 8px 0 0;
+        font-size: 14px;
+        letter-spacing: -0.02em;
+        line-height: 110%;
+        color: #FFF;
+    }
 	.resume-entry {
 		display: grid;
-        place-items: middle;
-		grid-template-columns: 140px 1fr;
+		grid-template-columns: minmax(110px, 140px) minmax(0, 1fr);
 		column-gap: 12px;
 		margin-bottom: 24px;
 	}
@@ -120,15 +130,37 @@
         color: #FFF;
     }
     .divider {
-        width: min(45%, 70rem);
+		width: min(100% - 2rem, 44rem);
+		margin: 16px auto;
         height: 1px;
         border: none;
         background-color: #ffffff1a;
     }
 
     * {
+        /*
         border: 1px solid red;
+        */
         font-family: "Uncut Sans Bold","Uncut Sans Bold Placeholder",sans-serif;
     
     }
+
+	@media (max-width: 480px) {
+		.site-header,
+		.experience-content,
+		.education-content {
+			width: calc(100% - 2rem);
+		}
+
+		.resume-entry {
+			grid-template-columns: 1fr;
+			row-gap: 2px;
+			margin-bottom: 20px;
+		}
+
+		.entry-meta {
+			justify-content: flex-start;
+			margin: 0;
+		}
+	}
 </style>
