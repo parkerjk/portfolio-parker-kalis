@@ -10,8 +10,9 @@
 	<body>
 		<header class="site-header">
 			<slot name="header" />
-            <h2>Parker Kalis</h2>
-            <p class="header-details">Computer science student and software engineer. I build full stack applications. (Currently working on the design part)</p>
+			<h2>About</h2>
+			<h3 class="about-name">Parker Kalis</h3>
+            <p class="header-details">Computer science student and software engineer. I experiment with different technologies. My current tech stack is TypeScript, React, and Node.js. My professional experience includes working as a software engineer intern at various companies, mostly working with C# .NET, Typescript, and React applications.</p>
 		</header>
         <hr class="divider" />
 		<main class="experience-content">
@@ -56,6 +57,21 @@
 				</div>
 			</article>
 		</main>
+        <hr class="divider" />
+        <main class="project-content">
+			<h2>Projects</h2>
+            <article class="project-entry">
+				<p class="entry-meta">MadHacks 2025</p>
+				<div class="entry-details">
+                    <div class="project-name-link">
+                        <h3>NicheCard</h3>
+						<p class="entry-meta">-</p>
+                        <a href="https://github.com/parkerjk/niche-card">Repo</a>
+                    </div>
+					<p class="company-location">AI Credit Card Stack Optimizer</p>
+				</div>
+			</article>
+		</main>
 	</body>
 </html>
 
@@ -67,7 +83,7 @@
 		padding-top: clamp(3rem, 10vw, 7rem);
 		padding-bottom: 1rem;
 	}
-	.experience-content {
+	.experience-content, .project-content {
 		width: min(100% - 2rem, 44rem);
 		margin: 16px auto;
 	}
@@ -96,18 +112,27 @@
 	}
     .header-details {
         text-align: left;
-        margin: 8px 0 0;
+		margin: 4px 0 0;
         font-size: 14px;
-        letter-spacing: -0.02em;
-        line-height: 110%;
-        color: #FFF;
+		line-height: 1.5;
+		color: #aaa;
     }
-	.resume-entry {
+	.resume-entry, .project-entry {
 		display: grid;
 		grid-template-columns: minmax(110px, 140px) minmax(0, 1fr);
 		column-gap: 12px;
 		margin-bottom: 24px;
 	}
+    .project-name-link {
+        display: flex;
+		align-items: baseline;
+        justify-content: flex-start;
+		gap: 0.5rem;
+	}
+	.project-name-link h3,
+	.project-name-link .entry-meta {
+		margin: 0;
+    }
 	.entry-meta {
         display: flex;
         align-items: center;
