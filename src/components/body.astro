@@ -112,7 +112,7 @@
 			let animationFrameId = null;
 			let fireworks = [];
 			let dots = [];
-			let stars = [];
+			//let stars = [];
 			let active = false;
 
 			function resizeCanvas() {
@@ -124,6 +124,7 @@
 				ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 			}
 
+			/*
 			function seedStars() {
 				stars = [];
 				for (let i = 0; i < 55; i += 1) {
@@ -134,6 +135,7 @@
 					});
 				}
 			}
+			*/
 
 			function createFirework() {
 				const startX = Math.random() * window.innerWidth;
@@ -147,21 +149,23 @@
 			}
 
 			function drawStarfield() {
-				ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+				ctx.fillStyle = '#1b1b1b';
 				ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+				/*
 				for (const star of stars) {
 					ctx.beginPath();
 					ctx.fillStyle = '#f5f5ef';
 					ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
 					ctx.fill();
 				}
+				*/
 			}
 
 			function animateFireworks() {
 				ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 				drawStarfield();
 
-				if (Math.random() > 0.9) {
+				if (Math.random() > 0.8) {
 					createFirework();
 				}
 
@@ -173,7 +177,7 @@
 					ctx.fillStyle = 'rgb(' + firework.r + ', ' + firework.g + ', ' + firework.b + ')';
 					ctx.fillRect(currentX - 5, currentY - 5, 10, 10);
 
-					firework.time += 0.012;
+					firework.time += 0.008;
 					if (firework.time >= 1) {
 						fireworks.splice(i, 1);
 						const dotColorR = Math.random() * 255;
@@ -233,7 +237,7 @@
 				active = true;
 				fireworkButton.setAttribute('aria-pressed', 'true');
 				body.classList.add('fireworks-on');
-				seedStars();
+				//seedStars();
 				fireworks = [];
 				dots = [];
 				animationFrameId = window.requestAnimationFrame(animateFireworks);
@@ -249,9 +253,11 @@
 
 			window.addEventListener('resize', () => {
 				resizeCanvas();
+				/*
 				if (active) {
 					seedStars();
 				}
+				*/
 			});
 
 			resizeCanvas();
@@ -366,7 +372,7 @@
 		z-index: 0;
 		width: 100vw;
 		height: 100vh;
-		opacity: 0;
+		opacity: 1;
 		pointer-events: none;
 		transition: opacity 200ms ease;
 	}
@@ -453,6 +459,8 @@
 		height: 1px;
 		border: none;
 		background-color: rgba(255, 255, 255, 0.1);
+		z-index: 1;
+		position: relative;
 	}
 
 	@media (max-width: 480px) {
