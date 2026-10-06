@@ -12,7 +12,7 @@
 			<slot name="header" />
 			<h2>Parker Kalis</h2>
             <p class="header-details">Computer science student and software engineer. Always experimenting with different technologies. Current tech stack is TypeScript, React, and Node.js. Professional experience includes working as a software engineer intern at various companies, mostly working with C# .NET, Typescript, and React applications.</p>
-			<p class="header-details" style="margin-top: 8px;">Hobbies include hiking, watching movies, and playing chess. Slowly getting into reading and video editing.</p>
+			<p class="header-details" style="margin-top: 8px;">Hobbies include hiking, watching movies, and playing chess.</p>
 			<nav class="social-links" aria-label="Social links">
 				<a href="https://www.linkedin.com/in/parkerkalis/" class="social-link" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
 					<svg viewBox="0 0 24 24" aria-hidden="true">
@@ -100,66 +100,294 @@
 				</div>
 			</article>
 		</main>
+		<div class="fireworks-toggle-wrap">
+			<button class="fireworks-toggle" type="button" aria-pressed="false">Fireworks</button>
+		</div>
+		<canvas id="fireworks-background" class="fireworks-background" aria-hidden="true"></canvas>
+		<script is:inline>
+			const body = document.body;
+			const fireworkCanvas = document.getElementById('fireworks-background');
+			const fireworkButton = document.querySelector('.fireworks-toggle');
+			const ctx = fireworkCanvas.getContext('2d');
+			let animationFrameId = null;
+			let fireworks = [];
+			let dots = [];
+			let stars = [];
+			let active = false;
+
+			function resizeCanvas() {
+				const dpr = window.devicePixelRatio || 1;
+				fireworkCanvas.width = window.innerWidth * dpr;
+				fireworkCanvas.height = window.innerHeight * dpr;
+				fireworkCanvas.style.width = window.innerWidth + 'px';
+				fireworkCanvas.style.height = window.innerHeight + 'px';
+				ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+			}
+
+			function seedStars() {
+				stars = [];
+				for (let i = 0; i < 55; i += 1) {
+					stars.push({
+						x: Math.random() * window.innerWidth,
+						y: Math.random() * window.innerHeight,
+						radius: Math.random() * 2.2 + 0.8
+					});
+				}
+			}
+
+			function createFirework() {
+				const startX = Math.random() * window.innerWidth;
+				const startY = window.innerHeight;
+				const endX = Math.random() * window.innerWidth;
+				const endY = Math.random() * (window.innerHeight * 0.7);
+				const r = Math.random() * 255;
+				const g = Math.random() * 255;
+				const b = Math.random() * 255;
+				fireworks.push({ startX, startY, endX, endY, r, g, b, time: 0 });
+			}
+
+			function drawStarfield() {
+				ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+				ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+				for (const star of stars) {
+					ctx.beginPath();
+					ctx.fillStyle = '#f5f5ef';
+					ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+					ctx.fill();
+				}
+			}
+
+			function animateFireworks() {
+				ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+				drawStarfield();
+
+				if (Math.random() > 0.9) {
+					createFirework();
+				}
+
+				for (let i = fireworks.length - 1; i >= 0; i -= 1) {
+					const firework = fireworks[i];
+					const currentX = (1 - firework.time) * firework.startX + firework.time * firework.endX;
+					const currentY = (1 - firework.time) * firework.startY + firework.time * firework.endY;
+
+					ctx.fillStyle = 'rgb(' + firework.r + ', ' + firework.g + ', ' + firework.b + ')';
+					ctx.fillRect(currentX - 5, currentY - 5, 10, 10);
+
+					firework.time += 0.012;
+					if (firework.time >= 1) {
+						fireworks.splice(i, 1);
+						const dotColorR = Math.random() * 255;
+						const dotColorG = Math.random() * 255;
+						const dotColorB = Math.random() * 255;
+
+						for (let j = 0; j < 18 + Math.random() * 18; j += 1) {
+							dots.push({
+								x: firework.endX,
+								y: firework.endY,
+								s: 3,
+								vx: (Math.random() - 0.5) * 6,
+								vy: (Math.random() - 0.5) * 6,
+								r: dotColorR,
+								g: dotColorG,
+								b: dotColorB
+							});
+						}
+					}
+				}
+
+				for (let i = dots.length - 1; i >= 0; i -= 1) {
+					const dot = dots[i];
+					dot.x += dot.vx;
+					dot.y += dot.vy;
+					dot.r -= 2.5;
+					dot.g -= 2.5;
+					dot.b -= 2.5;
+					ctx.fillStyle = 'rgb(' + Math.max(0, dot.r) + ', ' + Math.max(0, dot.g) + ', ' + Math.max(0, dot.b) + ')';
+					ctx.fillRect(dot.x - dot.s, dot.y - dot.s, dot.s * 2, dot.s * 2);
+
+					if (dot.x < 0 || dot.x > window.innerWidth || dot.y < 0 || dot.y > window.innerHeight || dot.r < 10 || dot.g < 10 || dot.b < 10) {
+						dots.splice(i, 1);
+					}
+				}
+
+				animationFrameId = window.requestAnimationFrame(animateFireworks);
+			}
+
+			function stopFireworks() {
+				active = false;
+				fireworkButton.setAttribute('aria-pressed', 'false');
+				body.classList.remove('fireworks-on');
+				if (animationFrameId) {
+					window.cancelAnimationFrame(animationFrameId);
+					animationFrameId = null;
+				}
+				ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+				fireworks = [];
+				dots = [];
+			}
+
+			function startFireworks() {
+				if (active) {
+					return;
+				}
+				active = true;
+				fireworkButton.setAttribute('aria-pressed', 'true');
+				body.classList.add('fireworks-on');
+				seedStars();
+				fireworks = [];
+				dots = [];
+				animationFrameId = window.requestAnimationFrame(animateFireworks);
+			}
+
+			fireworkButton.addEventListener('click', () => {
+				if (active) {
+					stopFireworks();
+				} else {
+					startFireworks();
+				}
+			});
+
+			window.addEventListener('resize', () => {
+				resizeCanvas();
+				if (active) {
+					seedStars();
+				}
+			});
+
+			resizeCanvas();
+		</script>
 	</body>
 </html>
 
 
 <style>
+	:global(body) {
+		margin: 0;
+		background: #111;
+		color: #fff;
+	}
+
+	* {
+		box-sizing: border-box;
+		font-family: "Uncut Sans Bold", "Uncut Sans Bold Placeholder", sans-serif;
+	}
+
+	a {
+		text-decoration: underline;
+		color: #666;
+	}
+
+	.site-header,
+	.experience-content,
+	.education-content,
+	.project-content,
+	.fireworks-toggle-wrap {
+		position: relative;
+		z-index: 1;
+	}
+
 	.site-header {
 		width: min(100% - 2rem, 44rem);
 		margin: auto;
 		padding-top: clamp(3rem, 10vw, 7rem);
 		padding-bottom: 1rem;
 	}
+
 	.social-links {
 		display: flex;
 		align-items: center;
 		gap: 16px;
 		margin: 24px 0 0 16px;
 	}
-		.social-link {
+
+	.social-link {
 		display: inline-flex;
 		color: #aaa;
 		text-decoration: none;
 		transition: color 150ms ease;
 	}
-		.social-link:hover,
-		.social-link:focus-visible {
+
+	.social-link:hover,
+	.social-link:focus-visible {
 		color: #fff;
 	}
-		.social-link svg {
+
+	.social-link svg {
 		width: 20px;
 		height: 20px;
 		fill: currentColor;
 	}
-		.social-link-stroke svg {
-			fill: none;
-			stroke: currentColor;
-			stroke-width: 2;
-		}
-		.social-link-stroke .social-icon-fill {
-			fill: currentColor;
-			stroke: none;
-		}
-		.social-links .social-icon-fill {
-			fill: currentColor;
-			stroke: none;
-		}
-	.experience-content, .project-content {
+
+	.social-link-stroke svg {
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 2;
+	}
+
+	.social-link-stroke .social-icon-fill,
+	.social-icon-fill {
+		fill: currentColor;
+		stroke: none;
+	}
+
+	.fireworks-toggle-wrap {
+		display: flex;
+		justify-content: center;
+		margin: 0 auto 24px;
+	}
+
+	.fireworks-toggle {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		padding: 6px 12px;
+		border: 1px solid rgba(255, 255, 255, 0.25);
+		border-radius: 999px;
+		background: transparent;
+		color: #aaa;
+		font-size: 10px;
+		line-height: 1.2;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		cursor: pointer;
+		transition: color 150ms ease, border-color 150ms ease, background 150ms ease;
+	}
+
+	.fireworks-toggle:hover,
+	.fireworks-toggle:focus-visible {
+		color: #fff;
+		border-color: rgba(255, 255, 255, 0.5);
+		background: rgba(255, 255, 255, 0.02);
+	}
+
+	.fireworks-background {
+		position: fixed;
+		inset: 0;
+		z-index: 0;
+		width: 100vw;
+		height: 100vh;
+		opacity: 0;
+		pointer-events: none;
+		transition: opacity 200ms ease;
+	}
+
+	:global(body.fireworks-on) .fireworks-background {
+		opacity: 1;
+	}
+
+	.experience-content,
+	.education-content,
+	.project-content {
 		width: min(100% - 2rem, 44rem);
 		margin: 16px auto;
 	}
-    .education-content {
-		width: min(100% - 2rem, 44rem);
-		margin: 16px auto;
-	}
-    a {
-        text-decoration: underline;
-        color: #666;
-    }
-	h2, h3, .entry-meta {
+
+	h2,
+	h3,
+	.entry-meta {
 		color: #fff;
 	}
+
 	h2 {
 		font-size: 12px;
 		font-weight: normal;
@@ -167,76 +395,71 @@
 		text-transform: uppercase;
 		margin: 0 0 24px;
 	}
+
 	h3 {
 		font-size: 16px;
-		font-weight: normal;
+		font-weight: 400;
 		margin: 6px 0 0;
 	}
-    .header-details {
-        text-align: left;
+
+	.header-details {
 		margin: 4px 0 0;
-        padding: 0 0 0 12px;
-        font-size: 14px;
+		padding-left: 12px;
+		font-size: 14px;
 		line-height: 1.5;
 		color: #aaa;
-    }
-	.resume-entry, .project-entry {
+	}
+
+	.resume-entry,
+	.project-entry {
 		display: grid;
 		grid-template-columns: minmax(110px, 140px) minmax(0, 1fr);
 		column-gap: 12px;
 		margin-bottom: 24px;
 	}
-    .project-name-link {
-        display: flex;
+
+	.project-name-link {
+		display: flex;
 		align-items: baseline;
-        justify-content: flex-start;
+		justify-content: flex-start;
 		gap: 0.5rem;
 	}
+
 	.project-name-link h3,
 	.project-name-link .entry-meta {
 		margin: 0;
-    }
+	}
+
 	.entry-meta {
-        display: flex;
-        align-items: center;
-        justify-content: center;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		font-size: 13px;
-		letter-spacing: -0.01em;;
+		letter-spacing: -0.01em;
 		color: #666;
 	}
+
 	.company-location {
 		font-size: 13px;
 		letter-spacing: -0.01em;
 		margin: 4px 0 0;
 		opacity: 0.7;
-        color: #666;
+		color: #666;
 	}
-    .text-content {
-        font-size : 16px;
-		letter-spacing: -0.02em;
-        line-height: 110%;
-        color: #FFF;
-    }
-    .divider {
+
+	.divider {
 		width: min(100% - 2rem, 44rem);
 		margin: 16px auto;
-        height: 1px;
-        border: none;
-        background-color: #ffffff1a;
-    }
-
-    * {
-        /*
-        border: 1px solid red;
-        */
-        font-family: "Uncut Sans Bold","Uncut Sans Bold Placeholder",sans-serif;
-    
-    }
+		height: 1px;
+		border: none;
+		background-color: rgba(255, 255, 255, 0.1);
+	}
 
 	@media (max-width: 480px) {
 		.site-header,
 		.experience-content,
-		.education-content {
+		.education-content,
+		.project-content {
 			width: calc(100% - 2rem);
 		}
 
