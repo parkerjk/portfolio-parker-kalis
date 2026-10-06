@@ -3,5 +3,6 @@ import { defineConfig } from 'astro/config';
 
 // https://astro.build/config
 export default defineConfig({
-    site: 'https://parkerjk.github.io/portfolio-parker-kalis/'
+    site: 'https://parkerjk.github.io/portfolio-parker-kalis/',
+    base: '/portfolio-parker-kalis/',
 });
