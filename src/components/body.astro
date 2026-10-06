@@ -149,7 +149,10 @@
 			}
 
 			function drawStarfield() {
-				ctx.fillStyle = '#1b1b1b';
+				const gradient = ctx.createLinearGradient(0, 0, 0, window.innerHeight);
+				gradient.addColorStop(0, '#182848');
+				gradient.addColorStop(1, '#4b6cb7');
+				ctx.fillStyle = gradient;
 				ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
 				/*
 				for (const star of stars) {
@@ -269,7 +272,6 @@
 <style>
 	:global(body) {
 		margin: 0;
-		background: #111;
 		color: #fff;
 	}
 
@@ -280,7 +282,8 @@
 
 	a {
 		text-decoration: underline;
-		color: #666;
+		/* color: #666; */
+		color: #aaa;
 	}
 
 	.site-header,
@@ -372,6 +375,11 @@
 		z-index: 0;
 		width: 100vw;
 		height: 100vh;
+		background: linear-gradient(
+			to bottom,
+			#182848,
+			#4b6cb7
+		);
 		opacity: 1;
 		pointer-events: none;
 		transition: opacity 200ms ease;
@@ -442,7 +450,8 @@
 		justify-content: center;
 		font-size: 13px;
 		letter-spacing: -0.01em;
-		color: #666;
+		/* color: #666; */
+		color: #aaa;
 	}
 
 	.company-location {
@@ -450,7 +459,8 @@
 		letter-spacing: -0.01em;
 		margin: 4px 0 0;
 		opacity: 0.7;
-		color: #666;
+		/* color: #666; */
+		color: #aaa;
 	}
 
 	.divider {
